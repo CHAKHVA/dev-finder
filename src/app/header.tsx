@@ -52,8 +52,8 @@ export function Header() {
     const session = useSession();
 
     return (
-        <header className="bg-gray-100 dark:bg-gray-900 container mx-auto py-4">
-            <div className="flex justify-between items-center">
+        <header className="bg-gray-100 dark:bg-gray-900  py-4">
+            <div className="flex justify-between items-center container mx-auto">
                 <Link
                     href={"/"}
                     className="flex gap-2 items-center text-xl hover:underline"
