@@ -13,9 +13,9 @@ import {
 } from "@stream-io/video-react-sdk";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { generateTokenAction } from "./action";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { generateTokenAction } from "./actions";
 
 const apiKey = process.env.STREAM_API_KEY as string;
 
@@ -26,14 +26,10 @@ export function DevFinderVideo({ room }: { room: Room }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!room) {
-      return;
-    }
-
+    if (!room) return;
     if (!session.data) {
       return;
     }
-
     const userId = session.data.user.id;
     const client = new StreamVideoClient({
       apiKey,
@@ -44,7 +40,6 @@ export function DevFinderVideo({ room }: { room: Room }) {
       },
       tokenProvider: () => generateTokenAction(),
     });
-
     const call = client.call("default", room.id);
     call.join({ create: true });
     setClient(client);
@@ -53,9 +48,7 @@ export function DevFinderVideo({ room }: { room: Room }) {
     return () => {
       call
         .leave()
-        .then(() => {
-          client.disconnectUser();
-        })
+        .then(() => client.disconnectUser())
         .catch(console.error);
     };
   }, [session, room]);

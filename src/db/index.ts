@@ -1,24 +1,24 @@
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
 declare global {
-    var db: PostgresJsDatabase<typeof schema> | undefined;
+  var db: PostgresJsDatabase<typeof schema> | undefined;
 }
 
 let db: PostgresJsDatabase<typeof schema>;
 
 if (process.env.NODE_ENV === "production") {
-    db = drizzle(postgres(process.env.DATABASE_URL as string), { schema });
+  db = drizzle(postgres(process.env.DATABASE_URL as string), { schema });
 } else {
-    if (!global.db) {
-        global.db = drizzle(postgres(process.env.DATABASE_URL as string), {
-            schema,
-        });
-    }
+  if (!global.db) {
+    global.db = drizzle(postgres(process.env.DATABASE_URL as string), {
+      schema,
+    });
+  }
 
-    db = global.db;
+  db = global.db;
 }
 
 export { db };

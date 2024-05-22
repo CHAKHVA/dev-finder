@@ -1,23 +1,20 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SearchIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const formSchema = z.object({
   search: z.string().min(0).max(50),
@@ -42,9 +39,9 @@ export function SearchBar() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (values.search) {
-      router.push(`/?search=${values.search}`);
+      router.push(`/browse?search=${values.search}`);
     } else {
-      router.push("/");
+      router.push("/browse");
     }
   }
 
@@ -69,8 +66,7 @@ export function SearchBar() {
         />
 
         <Button type="submit">
-          <SearchIcon className="mr-2" />
-          Search
+          <SearchIcon className="mr-2" /> Search
         </Button>
 
         {query.get("search") && (
